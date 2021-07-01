@@ -25,4 +25,4 @@ String apiKey = "YOUR API KEY HERE";
 - youtube_player_flutter (For playing Youtube videos inside Flutter app)
 
 ## Download apk
-If you wanna see how the result of the codes look like, [here](jjjj) is the apk.
+I will add the link when I have built the release version.
