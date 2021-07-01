@@ -1,0 +1,176 @@
+https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US&videoCategoryId=10&key=AIzaSyAiK1xIaue0EPfw110MBZWOTeAax0TPzAI
+
+https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=chartUnspecified&videoCategoryId=10&maxResults=1&key=AIzaSyAiK1xIaue0EPfw110MBZWOTeAax0TPzAI
+
+Authorization: Bearer [YOUR_ACCESS_TOKEN]
+Accept: application/json
+
+https://youtube.googleapis.com/youtube/v3/videos?pageToken=CAUQAA&part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US&videoCategoryId=10&key=AIzaSyAiK1xIaue0EPfw110MBZWOTeAax0TPzAI
+
+GET https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=chartUnspecified&regionCode=US&videoCategoryId=10&key=[YOUR_API_KEY] HTTP/1.1
+
+GET https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&videoCategoryId=10&key=[YOUR_API_KEY] HTTP/1.1
+
+
+Actual url) music
+https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&videoCategoryId=10&maxResults=30&key=AIzaSyAiK1xIaue0EPfw110MBZWOTeAax0TPzAI
+
+https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&videoCategoryId=10&maxResults=1&key=AIzaSyAiK1xIaue0EPfw110MBZWOTeAax0TPzAI
+duration = PT2M43S
+
+flutter pub run build_runner build
+
+
+import 'package:json_annotation/json_annotation.dart';
+
+part 'videoData.g.dart';
+
+//RESPONES  DATA
+@JsonSerializable(explicitToJson: true)
+class ResponseData {
+  String kind;
+  String etag;
+  List<YtVideo> items;
+  String nextPageToken;
+  PageInfo pageInfo;
+
+  ResponseData({
+    required this.kind,
+    required this.etag,
+    required this.items,
+    required this.nextPageToken,
+    required this.pageInfo,
+  });
+  Map<String, dynamic> toJson() => _$ResponseDataToJson(this);
+  factory ResponseData.fromJson(Map<String, dynamic> json) {
+    print('GONNA SERIALIZE JSON TO RESPONSE DATA OBJECT');
+    return _$ResponseDataFromJson(json);
+  }
+}
+
+//YT VIDEO
+@JsonSerializable(explicitToJson: true)
+class YtVideo {
+  String kind;
+  String etag;
+  String id;
+  VdSnippet snippet;
+
+  YtVideo({
+    required this.kind,
+    required this.etag,
+    required this.id,
+    required this.snippet,
+  });
+  Map<String, dynamic> toJson() => _$YtVideoToJson(this);
+
+  factory YtVideo.fromJson(Map<String, dynamic> json) =>
+      _$YtVideoFromJson(json);
+}
+
+//VD SNIPPET
+@JsonSerializable(explicitToJson: true)
+class VdSnippet {
+  String publishedAt;
+  String channelId;
+  String title;
+  String description;
+  Thumbnail thumbnails;
+  String channelTitle;
+  List<String> tags;
+  String categoryId;
+  String liveBroadcastContent;
+  Localized localized;
+  String defaultAudioLanguage;
+
+  VdSnippet({
+    required this.publishedAt,
+    required this.channelId,
+    required this.title,
+    required this.description,
+    required this.thumbnails,
+    required this.channelTitle,
+    required this.tags,
+    required this.categoryId,
+    required this.liveBroadcastContent,
+    required this.localized,
+    required this.defaultAudioLanguage,
+  });
+  Map<String, dynamic> toJson() => _$VdSnippetToJson(this);
+
+  factory VdSnippet.fromJson(Map<String, dynamic> json) =>
+      _$VdSnippetFromJson(json);
+}
+
+//THUMBNAIL
+@JsonSerializable(explicitToJson: true)
+class Thumbnail {
+  @JsonKey(name: 'default')
+  final ThumbnailData defaultRes;
+
+  final ThumbnailData medium;
+  final ThumbnailData standard;
+  final ThumbnailData high;
+  final ThumbnailData maxres;
+
+  Thumbnail({
+    required this.defaultRes,
+    required this.medium,
+    required this.standard,
+    required this.high,
+    required this.maxres,
+  });
+  Map<String, dynamic> toJson() => _$ThumbnailToJson(this);
+
+  factory Thumbnail.fromJson(Map<String, dynamic> json) =>
+      _$ThumbnailFromJson(json);
+}
+
+@JsonSerializable()
+class ThumbnailData {
+  final String url;
+  final int width;
+  final int height;
+
+  ThumbnailData({
+    required this.url,
+    required this.width,
+    required this.height,
+  });
+  Map<String, dynamic> toJson() => _$ThumbnailDataToJson(this);
+
+  factory ThumbnailData.fromJson(Map<String, dynamic> json) =>
+      _$ThumbnailDataFromJson(json);
+}
+
+//LOCALIZED
+@JsonSerializable()
+class Localized {
+  String title;
+  String description;
+
+  Localized({
+    required this.title,
+    required this.description,
+  });
+  Map<String, dynamic> toJson() => _$LocalizedToJson(this);
+
+  factory Localized.fromJson(Map<String, dynamic> json) =>
+      _$LocalizedFromJson(json);
+}
+
+//PAGE INFO
+@JsonSerializable()
+class PageInfo {
+  int totalResults;
+  int resultsPerPage;
+
+  PageInfo({
+    required this.totalResults,
+    required this.resultsPerPage,
+  });
+  Map<String, dynamic> toJson() => _$PageInfoToJson(this);
+
+  factory PageInfo.fromJson(Map<String, dynamic> json) =>
+      _$PageInfoFromJson(json);
+}
