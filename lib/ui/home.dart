@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:yt_popular/models/videoData.dart';
-import 'package:yt_popular/models/videosList.dart';
+import 'package:yt_popular/models/homeVdsList.dart';
 import 'package:yt_popular/ui/player.dart';
 import 'common.dart';
 
@@ -13,13 +13,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   void initState() {
-    context.read<VideosList>().loadVideos();
+    context.read<HomeVdsList>().loadVideos();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final VideosList vl = context.watch<VideosList>();
+    final HomeVdsList vl = context.watch<HomeVdsList>();
     final String r = vl.loadResult;
     if (r == '1') {
       //vd list
@@ -43,8 +43,8 @@ class _HomeState extends State<Home> {
 class VideosListUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final VideosList vl = context.watch<VideosList>();
-    final List<YtVideo> videos = vl.musicVideos;
+    final HomeVdsList vl = context.watch<HomeVdsList>();
+    final List<YtVideo> videos = vl.vds;
     return ListView.builder(
       itemCount: videos.length + 2,
       itemBuilder: (BuildContext context, int i) {
@@ -55,7 +55,7 @@ class VideosListUi extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: 20),
-              LeadingTxt('  What\'s popular on Youtube?', false, false),
+              LeadingTxt('  What\'s popular on Youtube?', false),
               SizedBox(height: 20),
             ],
           );
@@ -91,20 +91,21 @@ class YtVdItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          VdThumbnail(ytVd.snippet.thumbnails.high.url),
+          VdThumbnail(
+              ytVd.snippet.thumbnails.high.url, ytVd.contentDetails.duration),
           SizedBox(height: 5),
-          DescTxt('${ytVd.snippet.title}', false, false),
+          DescTxt('${ytVd.snippet.title}', false),
           SmallerDescTxt(
-              '${ytVd.snippet.channelTitle} | ${ytVd.snippet.publishedAt}\n',
-              false,
-              false),
+            '${ytVd.snippet.channelTitle} | ${ytVd.statistics.viewCount} views | ${ytVd.snippet.publishedAt}\n',
+            false,
+          ),
         ],
       ),
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => Player(ytVd.id),
+            builder: (BuildContext context) => Player(ytVd),
           ),
         );
       },
@@ -113,15 +114,39 @@ class YtVdItem extends StatelessWidget {
 }
 
 class VdThumbnail extends StatelessWidget {
-  final String url;
-  VdThumbnail(this.url);
+  final String url, duration;
+  VdThumbnail(this.url, this.duration);
   @override
   Widget build(BuildContext context) {
     final double sw = MediaQuery.of(context).size.width;
-    return Image.network(
-      url,
-      width: sw,
-      height: sw * 0.75,
+    return Stack(
+      alignment: AlignmentDirectional.bottomEnd,
+      children: [
+        //image
+        Image.network(
+          url,
+          width: sw,
+          height: sw * 0.75,
+        ),
+        //duration
+        Padding(
+          padding: EdgeInsets.only(bottom: 5, right: 5),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 7),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(1.5),
+            ),
+            child: Text(
+              duration,
+              style: TextStyle(
+                fontSize: 10,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -129,7 +154,7 @@ class VdThumbnail extends StatelessWidget {
 class LoadMoreBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final VideosList vl = context.watch<VideosList>();
+    final HomeVdsList vl = context.watch<HomeVdsList>();
     final String r = vl.nextPageLoadResult;
     //should show
     if (vl.nextPageToken != null) {
@@ -148,7 +173,7 @@ class LoadMoreBtn extends StatelessWidget {
       }
       //err
       else {
-        return DescTxt('Error: $r', true, false);
+        return DescTxt('Error: $r', true);
       }
     }
     //no more videos

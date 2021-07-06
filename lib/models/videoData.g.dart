@@ -25,12 +25,47 @@ YtVideo _$YtVideoFromJson(Map<String, dynamic> json) {
   return YtVideo(
     id: json['id'] as String,
     snippet: VdSnippet.fromJson(json['snippet'] as Map<String, dynamic>),
+    contentDetails:
+        ContentDetails.fromJson(json['contentDetails'] as Map<String, dynamic>),
+    statistics: Statistics.fromJson(json['statistics'] as Map<String, dynamic>),
   );
 }
 
 Map<String, dynamic> _$YtVideoToJson(YtVideo instance) => <String, dynamic>{
       'id': instance.id,
       'snippet': instance.snippet.toJson(),
+      'contentDetails': instance.contentDetails.toJson(),
+      'statistics': instance.statistics.toJson(),
+    };
+
+ContentDetails _$ContentDetailsFromJson(Map<String, dynamic> json) {
+  return ContentDetails(
+    duration: json['duration'] as String,
+  );
+}
+
+Map<String, dynamic> _$ContentDetailsToJson(ContentDetails instance) =>
+    <String, dynamic>{
+      'duration': instance.duration,
+    };
+
+Statistics _$StatisticsFromJson(Map<String, dynamic> json) {
+  return Statistics(
+    viewCount: json['viewCount'] as String,
+    likeCount: json['likeCount'] as String,
+    dislikeCount: json['dislikeCount'] as String,
+    favouriteCount: json['favouriteCount'] as String,
+    commentCount: json['commentCount'] as String,
+  );
+}
+
+Map<String, dynamic> _$StatisticsToJson(Statistics instance) =>
+    <String, dynamic>{
+      'viewCount': instance.viewCount,
+      'likeCount': instance.likeCount,
+      'dislikeCount': instance.dislikeCount,
+      'favouriteCount': instance.favouriteCount,
+      'commentCount': instance.commentCount,
     };
 
 VdSnippet _$VdSnippetFromJson(Map<String, dynamic> json) {

@@ -87,7 +87,7 @@ class MyProgressIndicator extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        DescTxt(this.name, true, false),
+        DescTxt(this.name, true),
       ],
     );
   }
@@ -96,8 +96,8 @@ class MyProgressIndicator extends StatelessWidget {
 //leading txt
 class LeadingTxt extends StatelessWidget {
   String txt;
-  bool center, myan;
-  LeadingTxt(this.txt, this.center, this.myan);
+  bool center;
+  LeadingTxt(this.txt, this.center);
   @override
   Widget build(BuildContext context) {
     double sw = MediaQuery.of(context).size.width;
@@ -108,29 +108,10 @@ class LeadingTxt extends StatelessWidget {
         textAlign: this.center ? TextAlign.center : TextAlign.start,
         style: TextStyle(
           color: Color(0xff261010),
-          fontSize: this.myan ? 21 : 23,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
-          height: this.myan ? 1.7 : 1.2,
+          height: 1.2,
         ),
-      ),
-    );
-  }
-}
-
-class MinimalLeadingTxt extends StatelessWidget {
-  String txt;
-  bool center, myan;
-  MinimalLeadingTxt(this.txt, this.center, this.myan);
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      this.txt,
-      textAlign: this.center ? TextAlign.center : TextAlign.start,
-      style: TextStyle(
-        color: Color(0xff365B6D),
-        fontSize: this.myan ? 21 : 23,
-        fontWeight: FontWeight.bold,
-        height: this.myan ? 1.7 : 1.2,
       ),
     );
   }
@@ -139,8 +120,8 @@ class MinimalLeadingTxt extends StatelessWidget {
 //desc txt
 class DescTxt extends StatelessWidget {
   String txt;
-  bool center, myan;
-  DescTxt(this.txt, this.center, this.myan);
+  bool center;
+  DescTxt(this.txt, this.center);
   @override
   Widget build(BuildContext context) {
     double sw = MediaQuery.of(context).size.width;
@@ -151,8 +132,8 @@ class DescTxt extends StatelessWidget {
         textAlign: this.center ? TextAlign.center : TextAlign.start,
         style: TextStyle(
           color: Color(0xff000000),
-          fontSize: this.myan ? 16 : 18,
-          height: this.myan ? 1.7 : 1.5,
+          fontSize: 17,
+          height: 1.5,
         ),
       ),
     );
@@ -161,11 +142,11 @@ class DescTxt extends StatelessWidget {
 
 class SmallerDescTxt extends StatelessWidget {
   String txt;
-  bool center, myan;
-  SmallerDescTxt(this.txt, this.center, this.myan);
+  bool center;
+  SmallerDescTxt(this.txt, this.center);
   @override
   Widget build(BuildContext context) {
-    double sw = MediaQuery.of(context).size.width;
+    final double sw = MediaQuery.of(context).size.width;
     return SizedBox(
       width: sw * 0.90,
       child: Text(
@@ -173,27 +154,31 @@ class SmallerDescTxt extends StatelessWidget {
         textAlign: this.center ? TextAlign.center : TextAlign.start,
         style: TextStyle(
           color: Color(0xff595858),
-          fontSize: this.myan ? 14 : 16,
-          height: this.myan ? 1.7 : 1.5,
+          fontSize: 14,
+          height: 1.5,
         ),
       ),
     );
   }
 }
 
-class MinimalDescTxt extends StatelessWidget {
+class SelectableDescTxt extends StatelessWidget {
   final String txt;
-  final bool center, myan;
-  MinimalDescTxt(this.txt, this.center, this.myan);
+  final bool center;
+  SelectableDescTxt(this.txt, this.center);
   @override
   Widget build(BuildContext context) {
-    return Text(
-      this.txt,
-      textAlign: this.center ? TextAlign.center : TextAlign.start,
-      style: TextStyle(
-        color: Color(0xff365B6D),
-        fontSize: this.myan ? 16 : 18,
-        height: this.myan ? 1.7 : 1.5,
+    double sw = MediaQuery.of(context).size.width;
+    return SizedBox(
+      width: sw * 0.90,
+      child: SelectableText(
+        this.txt,
+        textAlign: this.center ? TextAlign.center : TextAlign.start,
+        style: TextStyle(
+          color: Color(0xff000000),
+          fontSize: 17,
+          height: 1.5,
+        ),
       ),
     );
   }
@@ -239,7 +224,7 @@ class ErrorMessage extends StatelessWidget {
           height: 10,
         ),
         //desc
-        DescTxt(this.desc, true, this.myan),
+        DescTxt(this.desc, true),
       ],
     );
   }
@@ -277,11 +262,11 @@ class Message extends StatelessWidget {
         SizedBox(
           height: 15,
         ),
-        LeadingTxt(this.leading, true, this.myan),
+        LeadingTxt(this.leading, true),
         SizedBox(
           height: 10,
         ),
-        DescTxt(this.desc, true, this.myan),
+        DescTxt(this.desc, true),
       ],
     );
   }

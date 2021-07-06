@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:yt_popular/models/videosList.dart';
+import 'package:yt_popular/models/homeVdsList.dart';
 import 'package:yt_popular/ui/home.dart';
 
 //sci and tech 28, musicc 10, Howto & Style=26,Education=27,Documentary=35,Family=37
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => VideosList()),
+        ChangeNotifierProvider(create: (context) => HomeVdsList()),
       ],
       child: MaterialApp(
         //theme: ThemeData(accentColor: Colors.white),

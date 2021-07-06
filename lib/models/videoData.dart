@@ -22,17 +22,53 @@ class ResponseData {
 //YT VIDEO
 @JsonSerializable(explicitToJson: true)
 class YtVideo {
-  String id;
-  VdSnippet snippet;
+  final String id;
+  final VdSnippet snippet;
+  final ContentDetails contentDetails;
+  final Statistics statistics;
 
   YtVideo({
     required this.id,
     required this.snippet,
+    required this.contentDetails,
+    required this.statistics,
   });
   Map<String, dynamic> toJson() => _$YtVideoToJson(this);
 
   factory YtVideo.fromJson(Map<String, dynamic> json) =>
       _$YtVideoFromJson(json);
+}
+
+@JsonSerializable()
+class ContentDetails {
+  String duration;
+  ContentDetails({
+    required this.duration,
+  });
+  Map<String, dynamic> toJson() => _$ContentDetailsToJson(this);
+
+  factory ContentDetails.fromJson(Map<String, dynamic> json) =>
+      _$ContentDetailsFromJson(json);
+}
+
+@JsonSerializable()
+class Statistics {
+  String viewCount;
+  String likeCount;
+  String dislikeCount;
+  String favouriteCount;
+  String commentCount;
+  Statistics({
+    required this.viewCount,
+    required this.likeCount,
+    required this.dislikeCount,
+    required this.favouriteCount,
+    required this.commentCount,
+  });
+  Map<String, dynamic> toJson() => _$StatisticsToJson(this);
+
+  factory Statistics.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsFromJson(json);
 }
 
 //VD SNIPPET
