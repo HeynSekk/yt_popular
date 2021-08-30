@@ -25,4 +25,5 @@ String apiKey = "YOUR API KEY HERE";
 - youtube_player_flutter (For playing Youtube videos inside Flutter app)
 
 ## Download apk
-I will add the link when I have built the release version.
+[Apk for arm64-v8a](https://drive.google.com/file/d/18Si70qxo3VJKX1n_qIgWC-JoTBNKa64b/view?usp=drivesdk)
+(Note that apk will work only for arm64-v8a architecture)

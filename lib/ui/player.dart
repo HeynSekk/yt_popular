@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:yt_popular/models/videoData.dart';
+import 'package:yt_popular/ui/common.dart';
 
 class Player extends StatefulWidget {
-  final String url;
-  Player(this.url);
+  final YtVideo vd;
+  Player(this.vd);
   @override
-  _PlayerState createState() => _PlayerState(url);
+  _PlayerState createState() => _PlayerState(vd);
 }
 
 class _PlayerState extends State<Player> {
-  final String url;
-  _PlayerState(this.url);
+  YtVideo vd;
+  _PlayerState(this.vd);
   late YoutubePlayerController _controller;
 
   @override
   void initState() {
     super.initState();
+    //initialize controller
     _controller = YoutubePlayerController(
-      initialVideoId: this.url,
+      initialVideoId: vd.id,
       flags: const YoutubePlayerFlags(
         mute: false,
         autoPlay: true,
@@ -46,6 +49,7 @@ class _PlayerState extends State<Player> {
 
   @override
   Widget build(BuildContext context) {
+    final double sw = MediaQuery.of(context).size.width;
     return YoutubePlayerBuilder(
       onExitFullScreen: () {
         // The player forces portraitUp after exiting fullscreen. This overrides the behaviour.
@@ -70,24 +74,107 @@ class _PlayerState extends State<Player> {
             ),
           ),
         ],
-        onEnded: (data) {
+        /*onEnded: (data) {
           _controller.load(this.url);
-        },
+        },*/
       ),
+      //BUILDER
       builder: (context, player) => Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'YouTube Popular',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-        ),
-        body: ListView(
+        body: Column(
           children: [
             player,
+            Flexible(
+              fit: FlexFit.tight,
+              child: SizedBox(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: sw * 0.05, right: sw * 0.05),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 10),
+                        DescTxt('Description', false),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: sw * 0.025),
+                          child: Divider(),
+                        ),
+                        //title
+                        LeadingTxt(
+                            vd.snippet?.title ?? '[Couldn\'t load title]',
+                            false),
+                        SizedBox(height: 30),
+                        //statistics
+                        Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          alignment: WrapAlignment.center,
+                          runAlignment: WrapAlignment.center,
+                          children: [
+                            //like
+                            Count(vd.statistics?.likeCount ?? '-', 'Likes'),
+                            //views
+                            Count(vd.statistics?.viewCount ?? '-', 'Views'),
+                            //comment
+                            Count(
+                                vd.statistics?.commentCount ?? '-', 'Comments'),
+                            //dislike
+                            Count(vd.statistics?.likeCount ?? '-', 'Dislikes'),
+                            //fav
+                            Count(vd.statistics?.favoriteCount ?? '-', 'Favs'),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: sw * 0.025),
+                          child: Divider(),
+                        ),
+                        //description
+                        SelectableDescTxt(
+                            vd.snippet?.description ??
+                                '[Could not load description]',
+                            false),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class Count extends StatelessWidget {
+  String countData, countType;
+
+  Count(this.countData, this.countType);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          countData,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            height: 1.2,
+          ),
+        ),
+        SizedBox(height: 5),
+        Text(
+          countType,
+          style: TextStyle(
+            color: Color(0xff7a7a7a),
+            fontSize: 13,
+            height: 1.2,
+          ),
+        ),
+      ],
     );
   }
 }
