@@ -1,5 +1,93 @@
 //plain frame
 import 'package:flutter/material.dart';
+import 'package:yt_popular/models/videoData.dart';
+import 'package:yt_popular/ui/player.dart';
+
+class YtVdItem extends StatelessWidget {
+  final YtVideo ytVd;
+  YtVdItem(this.ytVd);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          VdThumbnail(ytVd.snippet?.thumbnails?.high?.url,
+              ytVd.contentDetails?.duration),
+          SizedBox(height: 5),
+          DescTxt(ytVd.snippet?.title ?? '[No title]', false),
+          SmallerDescTxt(
+            '${ytVd.snippet?.channelTitle ?? '[No channel title]'} | ${ytVd.statistics?.viewCount ?? '-'} views | ${ytVd.snippet?.publishedAt ?? '[No date]'}\n',
+            false,
+          ),
+        ],
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => Player(ytVd),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class VdThumbnail extends StatelessWidget {
+  final String? url, duration;
+  VdThumbnail(this.url, this.duration);
+  @override
+  Widget build(BuildContext context) {
+    final double sw = MediaQuery.of(context).size.width;
+    //if thumbnail exist
+    if (url != null) {
+      //normal ui
+      return Stack(
+        alignment: AlignmentDirectional.bottomEnd,
+        children: [
+          //image
+          Image.network(
+            url!,
+            width: sw,
+            height: sw * 0.75,
+          ),
+          //duration
+          Padding(
+            padding: EdgeInsets.only(bottom: 5, right: 5),
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 7),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(1.5),
+              ),
+              child: Text(
+                duration ?? 'no data',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    //no thumbnail
+    else {
+      //plain container
+      return Container(
+        width: sw,
+        height: sw * 0.75,
+        color: Color(0xffe5e5e5),
+        child: Center(
+          child: Text('No thumbnail'),
+        ),
+      );
+    }
+  }
+}
 
 class PlainFrame extends StatelessWidget {
   final Widget content;

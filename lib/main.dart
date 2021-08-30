@@ -1,11 +1,11 @@
-// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:yt_popular/models/homeVdsList.dart';
 import 'package:yt_popular/ui/home.dart';
+import 'package:yt_popular/ui/search.dart';
 
-//sci and tech 28, musicc 10, Howto & Style=26,Education=27,Documentary=35,Family=37
+import 'models/vdsSearcher.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,12 +24,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => HomeVdsList()),
+        ChangeNotifierProvider(create: (context) => VdsSearcher()),
       ],
       child: MaterialApp(
         //theme: ThemeData(accentColor: Colors.white),
         initialRoute: '/',
         routes: {
           '/': (context) => Home(),
+          '/search': (context) => SearchUi(),
         },
       ),
     );

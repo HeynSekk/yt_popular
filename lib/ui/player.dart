@@ -5,7 +5,7 @@ import 'package:yt_popular/models/videoData.dart';
 import 'package:yt_popular/ui/common.dart';
 
 class Player extends StatefulWidget {
-  YtVideo vd;
+  final YtVideo vd;
   Player(this.vd);
   @override
   _PlayerState createState() => _PlayerState(vd);
@@ -80,59 +80,61 @@ class _PlayerState extends State<Player> {
       ),
       //BUILDER
       builder: (context, player) => Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'YouTube Popular',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-        ),
         body: Column(
           children: [
             player,
-            Container(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.only(left: sw * 0.05, right: sw * 0.05),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 10),
-                      DescTxt('Description', false),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: sw * 0.05),
-                        child: Divider(),
-                      ),
-                      //title
-                      LeadingTxt(vd.snippet.title, false),
-                      SizedBox(height: 10),
-                      //statistics
-                      Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
-                        alignment: WrapAlignment.center,
-                        runAlignment: WrapAlignment.center,
-                        children: [
-                          //like
-                          Count(vd.statistics.likeCount, 'Likes'),
-                          //views
-                          Count(vd.statistics.viewCount, 'Views'),
-                          //comment
-                          Count(vd.statistics.commentCount, 'Comments'),
-                          //dislike
-                          Count(vd.statistics.likeCount, 'Dislikes'),
-                          //fav
-                          Count(vd.statistics.likeCount, 'Favs'),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: sw * 0.05),
-                        child: Divider(),
-                      ),
-                      //description
-                      SelectableDescTxt(vd.snippet.description, false),
-                      SizedBox(height: 10),
-                    ],
+            Flexible(
+              fit: FlexFit.tight,
+              child: SizedBox(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: sw * 0.05, right: sw * 0.05),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 10),
+                        DescTxt('Description', false),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: sw * 0.025),
+                          child: Divider(),
+                        ),
+                        //title
+                        LeadingTxt(
+                            vd.snippet?.title ?? '[Couldn\'t load title]',
+                            false),
+                        SizedBox(height: 30),
+                        //statistics
+                        Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          alignment: WrapAlignment.center,
+                          runAlignment: WrapAlignment.center,
+                          children: [
+                            //like
+                            Count(vd.statistics?.likeCount ?? '-', 'Likes'),
+                            //views
+                            Count(vd.statistics?.viewCount ?? '-', 'Views'),
+                            //comment
+                            Count(
+                                vd.statistics?.commentCount ?? '-', 'Comments'),
+                            //dislike
+                            Count(vd.statistics?.likeCount ?? '-', 'Dislikes'),
+                            //fav
+                            Count(vd.statistics?.favoriteCount ?? '-', 'Favs'),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: sw * 0.025),
+                          child: Divider(),
+                        ),
+                        //description
+                        SelectableDescTxt(
+                            vd.snippet?.description ??
+                                '[Could not load description]',
+                            false),
+                        SizedBox(height: 10),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -158,7 +160,7 @@ class Count extends StatelessWidget {
           countData,
           style: TextStyle(
             color: Colors.black,
-            fontSize: 20,
+            fontSize: 15,
             fontWeight: FontWeight.bold,
             height: 1.2,
           ),
